@@ -349,15 +349,13 @@ function App() {
               : "Connect Wallet"}
           </button>
 
-          <div className={isAdmin ? "role-badge admin" : "role-badge user"}>
-            {!account ? (
-              <button className="connect-btn" onClick={connectWallet}>
-                Connect Wallet
-              </button>
-            ) : (
+          <div className="role-badge">
+            {account ? (
               <span className={isAdmin ? "admin-badge" : "user-badge"}>
                 {isAdmin ? "Admin" : "User"}
               </span>
+            ) : (
+              <span className="user-badge">Guest</span>
             )}
           </div>
         </div>
