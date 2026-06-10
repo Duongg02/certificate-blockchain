@@ -263,6 +263,19 @@ function App() {
     } catch (error) {
       console.log(error);
     }
+    try {
+      if (!window.ethereum) {
+        alert("Vui lòng cài MetaMask để kết nối ví");
+        return;
+      }
+
+      const provider = new BrowserProvider(window.ethereum);
+      const accounts = await provider.send("eth_requestAccounts", []);
+      setAccount(accounts[0]);
+    } catch (error) {
+      console.log(error);
+      alert("Không thể kết nối MetaMask");
+    }
   };
   const getTotalCertificates = async () => {
     try {
@@ -330,17 +343,22 @@ function App() {
             </p>
           </div>
 
-          <div className="info-box">
-            <span>Wallet</span>
-            <p>
-              {account
-                ? `${account.slice(0, 6)}...${account.slice(-4)}`
-                : "Not connected"}
-            </p>
-          </div>
+          <button className="connect-btn" onClick={connectWallet}>
+            {account
+              ? `${account.slice(0, 6)}...${account.slice(-4)}`
+              : "Connect Wallet"}
+          </button>
 
           <div className={isAdmin ? "role-badge admin" : "role-badge user"}>
-            {isAdmin ? "Admin" : "User"}
+            {!account ? (
+              <button className="connect-btn" onClick={connectWallet}>
+                Connect Wallet
+              </button>
+            ) : (
+              <span className={isAdmin ? "admin-badge" : "user-badge"}>
+                {isAdmin ? "Admin" : "User"}
+              </span>
+            )}
           </div>
         </div>
       </div>
